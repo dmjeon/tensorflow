@@ -117,7 +117,8 @@ RUN mkdir /home/$NB_USER/work && \
 #    fix-permissions /home/$NB_USER
 ENV TINI_VERSION v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
-RUN chmod +x /usr/bin/tini
+RUN fix-permissions /usr/bin/tini
+#RUN chmod +x /usr/bin/tini
 
 
 # Install Jupyter Notebook, Lab, and Hub
