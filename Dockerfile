@@ -1,4 +1,3 @@
-
 ARG ROOT_CONTAINER=nvcr.io/nvidia/tensorflow:20.10-tf2-py3
 
 ARG BASE_CONTAINER=$ROOT_CONTAINER
