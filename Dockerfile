@@ -110,11 +110,15 @@ RUN mkdir /home/$NB_USER/work && \
 #     fix-permissions /home/$NB_USER
 
 # Install Tini
-RUN conda install --quiet --yes 'tini=0.18.0' && \
-    conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 >> $CONDA_DIR/conda-meta/pinned && \
-    conda clean --all -f -y && \
-    fix-permissions $CONDA_DIR && \
-    fix-permissions /home/$NB_USER
+#RUN conda install --quiet --yes 'tini=0.18.0' && \
+#    conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 >> $CONDA_DIR/conda-meta/pinned && \
+#    conda clean --all -f -y && \
+#    fix-permissions $CONDA_DIR && \
+#    fix-permissions /home/$NB_USER
+ENV TINI_VERSION v0.18.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
+
 
 # Install Jupyter Notebook, Lab, and Hub
 # Generate a notebook server config
@@ -122,17 +126,18 @@ RUN conda install --quiet --yes 'tini=0.18.0' && \
 # Correct permissions
 # Do all this in a single RUN command to avoid duplicating all of the
 # files across image layers when the permissions change
-RUN conda install --quiet --yes \
-    'notebook=6.1.4' \
-    'jupyterhub' \
-    'jupyterlab' && \
-    conda clean --all -f -y && \
-    npm cache clean --force && \
-    jupyter notebook --generate-config && \
-    rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
-    rm -rf /home/$NB_USER/.cache/yarn && \
-    fix-permissions $CONDA_DIR && \
-    fix-permissions /home/$NB_USER
+#RUN conda install --quiet --yes \
+#    'notebook=6.1.4' \
+#    'jupyterhub' \
+#    'jupyterlab' && \
+#    conda clean --all -f -y && \
+#    npm cache clean --force && \
+#    jupyter notebook --generate-config && \
+#    rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
+#    rm -rf /home/$NB_USER/.cache/yarn && \
+#    fix-permissions $CONDA_DIR && \
+RUN pip install --quiet --no-cache-dir notebook=6.1.4 && \
+    fix-permissions /home/$NB_USER && \
 
 EXPOSE 8888
 
