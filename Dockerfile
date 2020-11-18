@@ -138,7 +138,7 @@ RUN fix-permissions /usr/bin/tini
 #    rm -rf /home/$NB_USER/.cache/yarn && \
 #    fix-permissions $CONDA_DIR && \
 RUN pip install --quiet --no-cache-dir notebook && \
-    fix-permissions /home/$NB_USER && \
+    fix-permissions /home/$NB_USER 
 
 EXPOSE 8888
 
